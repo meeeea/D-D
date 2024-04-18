@@ -42,7 +42,7 @@ class Book {
             name = Convertion.BytesToString(reader.ReadBytes(3));
         }
         catch {
-            throw new Exceptions.NameReadingError();
+            throw new Exceptions.NameException();
         }
         return true;
     }
@@ -54,8 +54,8 @@ class Book {
                 : base("Missing ID") { }
         }
         [Serializable]
-        public class NameReadingError : Exception {
-            public NameReadingError() 
+        public class NameException : Exception {
+            public NameException() 
                 : base("Failure to read name") { }
         }
     }
