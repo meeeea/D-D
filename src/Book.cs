@@ -1,6 +1,6 @@
 class Book {
-    private UInt16 id = 0;
-    public UInt16 ID => id;
+    private ushort id = 0;
+    public ushort ID => id;
     private string name = "";
     public string Name => name;
     private MonsterManager mManager = new();
