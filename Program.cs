@@ -19,7 +19,10 @@ class Program {
                 BookSet.Add(new Book(file.Name));
             }
             catch (Book.Exceptions.IDException) {
-                Console.WriteLine($"Issue regarding the book ID of {file.Name}.");
+                Console.WriteLine($"Failed to Open {file.Name} due to IDError");
+            }
+            catch (Book.Exceptions.NameException) {
+                Console.WriteLine($"Failed To Open {file.Name} due to NameError");
             }
         }
         foreach (Book book in BookSet) {
