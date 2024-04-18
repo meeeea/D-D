@@ -1,1 +1,2 @@
-first 8 bits is book ID,
+first 2 bytes is book ID,
+next 3 are it's name
