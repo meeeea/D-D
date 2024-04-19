@@ -16,7 +16,7 @@ class Spell {
     public string MatirialIsConsumedS {
         get {
             if (MatirialIsConsumed) {
-                return " which the spell consumes";
+                return ", which the spell consumes";
             }
             return "";
         }
@@ -79,6 +79,7 @@ class Spell {
 
     public void Display() {
         Console.WriteLine(Name);
-        Console.WriteLine($"{Components}");
+        Console.WriteLine($"Level: {Level}");
+        Console.WriteLine($"Components: {Components}");
     }
 }
