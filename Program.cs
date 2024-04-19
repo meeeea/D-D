@@ -20,13 +20,20 @@ class Program {
             }
             catch (Book.Exceptions.IDException) {
                 Console.WriteLine($"Failed to Open {file.Name} due to IDError");
+                BookSet.RemoveAt(BookSet.Count - 1);
             }
             catch (Book.Exceptions.NameException) {
                 Console.WriteLine($"Failed To Open {file.Name} due to NameError");
+                BookSet.RemoveAt(BookSet.Count - 1);
+            }
+            catch (Book.Exceptions.SpellException) {
+                Console.WriteLine($"Failure to Open {file.Name} due to SpellError");
+                BookSet.RemoveAt(BookSet.Count - 1);
             }
         }
         foreach (Book book in BookSet) {
-            Console.WriteLine($"{book.Name}: {book.ID}");
+            Console.WriteLine($"{book.Name}: {book.ID}, {book.SManager[0].Name}");
+            book.SManager.DisplayAll();
         }
     }
 }
