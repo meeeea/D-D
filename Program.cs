@@ -34,6 +34,8 @@ class Program {
         foreach (Book book in BookSet) {
             Console.WriteLine($"{book.Name}: {book.ID}");
             book.SManager.DisplayAll();
+            book.SaveBook();
         }
+
     }
 }

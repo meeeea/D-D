@@ -1,6 +1,11 @@
 class Book {
     private ushort _id = 0;
     public ushort ID => _id;
+    public byte[] IDSave {
+        get {
+            return BitConverter.GetBytes(ID);
+        }
+    }
     private string _name = "";
     public string Name => _name;
     private MonsterManager _mManager = new();
@@ -30,7 +35,9 @@ class Book {
 
     private bool ReadID(BinaryReader reader) {
         try {
-            _id = BitConverter.ToUInt16(reader.ReadBytes(2));
+            byte[] byteSet = reader.ReadBytes(2);
+            Array.Reverse(byteSet);
+            _id = BitConverter.ToUInt16(byteSet);
         }
         catch{
             throw new Exceptions.IDException();
@@ -50,6 +57,21 @@ class Book {
 
     private bool ReadSpells(BinaryReader reader) {
         return SManager.Add(reader);
+    }
+
+    public void SaveBook() {
+        try {
+            using (BinaryWriter writer = new BinaryWriter(File.Open($".\\books\\{Name}.book",
+            FileMode.Open))) {
+                writer.Write(IDSave);
+                writer.Write(Name);
+                
+                SManager.SaveAll(writer);
+            }
+        }
+        catch {
+            Console.WriteLine($"Failed to save {Name}");
+        }
     }
 
     public class Exceptions {

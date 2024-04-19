@@ -9,8 +9,8 @@ Spells:
     next 36 bytes are for the name of the spell, as such, a spell can not have a name
         over 36 characters.
     next byte is level.
-    then verbal (boolean)
     then somatic (boolean)
+    then verbal (boolean)
     then matirial (boolean)
     if it is matirial, next is "mattirial is consumed" (boolean)
         then the components. (any length)

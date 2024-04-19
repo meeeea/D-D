@@ -23,4 +23,10 @@ class SpellManager {
             spell.Display();
         }
     }
+
+    public void SaveAll(BinaryWriter writer) {
+        foreach (Spell spell in spells) {
+            spell.save(writer);
+        }
+    }
 }

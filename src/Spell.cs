@@ -82,4 +82,18 @@ class Spell {
         Console.WriteLine($"Level: {Level}");
         Console.WriteLine($"Components: {Components}");
     }
+
+    public void save(BinaryWriter writer) {
+        writer.Write('>');
+        foreach (char letter in Name.PadRight(36)) {
+            writer.Write(letter);
+        }
+        writer.Write(Level);
+        writer.Write(Somatic);
+        writer.Write(Verbal);
+        writer.Write(Matirial);
+        if (Matirial) {
+            writer.Write(MatirialIsConsumed);
+        }
+    }
 }
