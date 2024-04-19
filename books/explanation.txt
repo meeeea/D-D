@@ -1,2 +1,17 @@
 first 2 bytes is book ID,
 next 3 are it's name
+then begins spells (see spells at line (TODO))
+
+
+Spells:
+    first byte in a spell is whether there should be a spell, if a null character, will 
+        stop checking for spells and move on to next section.
+    next 36 bytes are for the name of the spell, as such, a spell can not have a name
+        over 36 characters.
+    next byte is level.
+    then verbal (boolean)
+    then somatic (boolean)
+    then matirial (boolean)
+    if it is matirial, next is "mattirial is consumed" (boolean)
+        then the components. (any length)
+    
