@@ -94,6 +94,7 @@ class Spell {
         writer.Write(Matirial);
         if (Matirial) {
             writer.Write(MatirialIsConsumed);
+            // saving of the acctual matirials and the main body of spell not done TODO
         }
     }
 }
