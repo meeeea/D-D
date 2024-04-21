@@ -67,7 +67,7 @@ class Spell {
     }
 
     public Spell(BinaryReader reader) {
-        _name = BitManager.BytesToString(reader.ReadBytes(36)).Trim();
+        _name = BitManager.ReadVariableLengthString(reader, 1);
         _level = reader.ReadByte();
         _somatic = BitManager.ByteToBoolean(reader.ReadByte());
         _verbal = BitManager.ByteToBoolean(reader.ReadByte());
@@ -85,7 +85,8 @@ class Spell {
 
     public void save(BinaryWriter writer) {
         writer.Write('>');
-        foreach (char letter in Name.PadRight(36)) {
+        writer.Write(Name.Length);
+        foreach (char letter in Name) {
             writer.Write(letter);
         }
         writer.Write(Level);
@@ -96,5 +97,26 @@ class Spell {
             writer.Write(MatirialIsConsumed);
             // saving of the acctual matirials and the main body of spell not done TODO
         }
+    }
+
+    public void EditName() {
+        while (true) {
+            Console.WriteLine("Input New Name");
+
+            string? newName = Console.ReadLine();
+            Console.WriteLine(newName);
+            if (newName != null) {
+                _name = newName;
+                return;
+            }
+        }
+    }
+
+    public void EditLevel() {
+        throw new NotImplementedException();
+    }
+
+    public void EditComponents() {
+        throw new NotImplementedException();
     }
 }

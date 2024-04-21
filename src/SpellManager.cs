@@ -24,6 +24,12 @@ class SpellManager {
         }
     }
 
+    public void ListedDisplay() {
+        for (int i = 0; i < spells.Count; i++) {
+            Console.WriteLine($"{i + 1}). {spells[i].Name}");
+        }
+    }
+
     public void SaveAll(BinaryWriter writer) {
         foreach (Spell spell in spells) {
             spell.save(writer);

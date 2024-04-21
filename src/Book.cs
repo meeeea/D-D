@@ -20,24 +20,30 @@ class Book {
     public ItemManager IManager => _iManager;
 
     public Book(string fileName) {
-        try {
-            using (BinaryReader reader = new BinaryReader(File.Open($".\\books\\{fileName}",
-            FileMode.Open))) {
-                ReadID(reader);
-                ReadName(reader);
-                ReadSpells(reader);
-            }
+        using (BinaryReader reader = new BinaryReader(File.Open($".\\books\\{fileName}",
+        FileMode.Open))) {
+            ReadID(reader);
+            ReadName(reader);
+            ReadSpells(reader);
         }
-        catch {
-            Console.WriteLine($"Failed to open {fileName}");
-        }
+    }
+
+    public void DisplayAll() {
+        Console.WriteLine($"{ID}) {Name}");
+        SManager.DisplayAll();
+    }
+
+    public void Display() {
+        Console.WriteLine($"{ID}). {Name}");
+    }
+
+    public void SpellDisplay() {
+        SManager.ListedDisplay();
     }
 
     private bool ReadID(BinaryReader reader) {
         try {
-            byte[] byteSet = reader.ReadBytes(2);
-            Array.Reverse(byteSet);
-            _id = BitConverter.ToUInt16(byteSet);
+            _id = BitConverter.ToUInt16(reader.ReadBytes(2));
         }
         catch{
             throw new Exceptions.IDException();
@@ -65,7 +71,6 @@ class Book {
             FileMode.Open))) {
                 writer.Write(IDSave);
                 writer.Write(Name);
-                
                 SManager.SaveAll(writer);
             }
         }

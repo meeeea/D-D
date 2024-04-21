@@ -1,41 +1,145 @@
-﻿using System.Collections;
-using System.Text;
-using System.Text.Unicode;
-
-class Program {
-    public static List<Book> BookSet = new();
+﻿class Program {
+        #pragma warning disable CS8618
+    public static BookSet bookSet;
+        #pragma warning restore CS8618
     public static void Main() {
-        OpenBookSet();
+        bookSet = new(true);
+        while (true) {
+            Console.WriteLine("1). Save Books");
+            Console.WriteLine("2). View Books");
+            Console.WriteLine("3). Edit Books");
+            Console.WriteLine("4). Quit");
+
+            string? response = Console.ReadLine();
+            MainLoopCaseSwitch(response);
+        }
     }
 
-    private static void OpenBookSet() {
-        DirectoryInfo d = new DirectoryInfo(".\\books"); //Assuming Test is your Folder
+    private static void MainLoopCaseSwitch(string? option) {
+        switch (option) {
+            case "1":
+            bookSet.Save(); return;
+            case "2":
+            bookSet.DisplayAll(); return;
+            case "3":
+            EditMenu(); return;
+            case "4":
+            Environment.Exit(1); return;
+        }
+        Console.Clear();
+    }
 
-        FileInfo[] Files = d.GetFiles("*.book"); //Getting Text files
-
-        foreach(FileInfo file in Files )
-        {
-            try {
-                BookSet.Add(new Book(file.Name));
-            }
-            catch (Book.Exceptions.IDException) {
-                Console.WriteLine($"Failed to Open {file.Name} due to IDError");
-                BookSet.RemoveAt(BookSet.Count - 1);
-            }
-            catch (Book.Exceptions.NameException) {
-                Console.WriteLine($"Failed To Open {file.Name} due to NameError");
-                BookSet.RemoveAt(BookSet.Count - 1);
-            }
-            catch (Book.Exceptions.SpellException) {
-                Console.WriteLine($"Failure to Open {file.Name} due to SpellError");
-                BookSet.RemoveAt(BookSet.Count - 1);
+    private static void EditMenu() {
+        while (true) {
+            Console.Clear();
+            Console.WriteLine("Select Book");
+            Console.WriteLine("0). return");
+            bookSet.Display();
+            
+            string? response = Console.ReadLine();
+            if (response != null) {
+                if (EditLoopSwitchCase(response)) {
+                    return;
+                }
             }
         }
-        foreach (Book book in BookSet) {
-            Console.WriteLine($"{book.Name}: {book.ID}");
-            book.SManager.DisplayAll();
-            book.SaveBook();
-        }
+    }
 
+    private static bool EditLoopSwitchCase(string response) {
+        if (response == "0") {
+            return true;
+        }
+        try {
+            BookEditLoop(bookSet.SelectBookByID(ushort.Parse(response)));
+        }
+        catch {
+            return false;
+        }
+        return false;
+    }
+
+    private static void BookEditLoop(Book? book) {
+        if (book == null) {
+            return;
+        }
+        while (true) {
+            Console.Clear();
+            Console.WriteLine("Select what in the book you wish to edit");
+            Console.WriteLine("1). spell");
+            Console.WriteLine("2). return");
+            
+            string? response = Console.ReadLine();
+            if (BookEditLoop(response, book)) {
+                return;
+            }
+        }
+    }
+
+    private static bool BookEditLoop(string? response, Book book) {
+        switch (response) {
+            case "1":
+            SpellEditSelectLoop(book); break;
+            case "2":
+            return true;
+        }
+        return false;
+    }
+
+    private static void SpellEditSelectLoop(Book book) {
+        while (true) {
+            Console.Clear();
+            Console.WriteLine("Select which spell to edit");
+            Console.WriteLine("0). return");
+        
+            book.SpellDisplay();
+
+            string? response = Console.ReadLine();
+            if (SpellEditSelectLoopSwitchCase(book, response)) {
+                return;
+            }
+        }
+    }
+
+    private static bool SpellEditSelectLoopSwitchCase(Book book, string? response) {
+        if (response == null) {
+            return false;
+        }
+        switch (response) {
+            case "0":
+            return true;
+            default:
+            SpellEditLoop(book.SManager[ushort.Parse(response) - 1]); break;
+        }
+        return false;
+    }
+
+    private static void SpellEditLoop(Spell spell) {
+        while (true) {
+            Console.Clear();
+            Console.WriteLine("What part of the spell do you want to edit");
+            Console.WriteLine("1). Name");
+            Console.WriteLine("2). Level");
+            Console.WriteLine("3). Components");
+            Console.WriteLine("4). return");
+
+            string? response = Console.ReadLine();
+            if (SpellEditLoopSwitchCase(spell, response)) {
+                return;
+            }
+        }
+    }
+
+    private static bool SpellEditLoopSwitchCase(Spell spell, string? response) {
+        switch (response) {
+            case "1":
+            spell.EditName(); break;
+            case "2":
+            spell.EditLevel(); break;
+            case "3":
+            spell.EditComponents(); break;
+            case "4":
+            return true;
+        }
+        return false;
     }
 }
