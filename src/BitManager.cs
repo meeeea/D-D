@@ -25,7 +25,15 @@ class BitManager {
         return false;
     }
 
-    public static string ReadVariableLengthString(BinaryReader reader) {
-        throw new NotImplementedException();
+    public static string ReadVariableLengthString(BinaryReader reader, int lengthBytes) {
+        byte[] bytes = reader.ReadBytes(lengthBytes);
+        ushort length;
+        if (bytes.Count() > 1) {
+            length = BitConverter.ToUInt16(bytes);
+        }
+        else {
+            length = bytes[0];
+        }
+        return BytesToString(reader.ReadBytes(length));
     }
 }
