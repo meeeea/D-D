@@ -28,6 +28,39 @@ class Book {
         }
     }
 
+    public Book(bool manual) {
+        ManualID();
+        ManualName();
+    }
+
+    private void ManualID() {
+        while (true) {
+            Console.WriteLine("Book ID:");
+
+            try {
+                    #pragma warning disable CS8604
+                _id = ushort.Parse(Console.ReadLine());
+                    #pragma warning restore CS8604
+            }
+            catch {
+                continue;
+            }
+            break;
+        }
+    }
+    
+    private void ManualName() {
+        while (true) {
+            Console.WriteLine("Select Name: ");
+
+            string? newName = Console.ReadLine();
+            if (newName != null) {
+                _name = newName;
+                return;
+            }
+        }
+    }
+
     public void DisplayAll() {
         Console.WriteLine($"{ID}) {Name}");
         SManager.DisplayAll();

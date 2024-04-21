@@ -4,8 +4,27 @@ class BookSet {
     private Book this[int index] => books[index];
 
     public BookSet(bool manual) {
-        
+        while (true) {
+            Console.WriteLine("Options:");
+            Console.WriteLine("1). Add Book");
+            Console.WriteLine("2). End");
+
+            string? response = Console.ReadLine();
+            if (response != null) {
+                switch (response) {
+                    case "1":
+                    ManualAddBook();break;
+                    case "2":
+                    return;
+                }
+            }
+        }
     }
+
+    private void ManualAddBook() {
+        books.Add(new(true));
+    }
+
     public BookSet() {
         DirectoryInfo d = new DirectoryInfo(".\\books"); //Assuming Test is your Folder
 
