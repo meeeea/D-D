@@ -31,6 +31,8 @@ class Book {
     public Book(bool manual) {
         ManualID();
         ManualName();
+
+        // TODO add spells and stuff
     }
 
     private void ManualID() {
