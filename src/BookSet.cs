@@ -1,8 +1,4 @@
-class BookSet {
-    private List<Book> books = new();
-
-    private Book this[int index] => books[index];
-
+class BookSet : List<Book> {
     public BookSet(bool manual) {
         while (true) {
             Console.WriteLine("Options:");
@@ -22,7 +18,7 @@ class BookSet {
     }
 
     private void ManualAddBook() {
-        books.Add(new(true));
+        Add(new(true));
     }
 
     public BookSet() {
@@ -33,7 +29,7 @@ class BookSet {
         foreach(FileInfo file in Files )
         {
             try {
-                books.Add(new Book(file.Name));
+                Add(new Book(file.Name));
             }
             catch (Book.Exceptions.IDException) {
                 Console.WriteLine($"Failed to Open {file.Name} due to IDError");
@@ -51,19 +47,19 @@ class BookSet {
     }
 
     public void Display() {
-        foreach (Book book in books) {
+        foreach (Book book in this) {
             book.Display();
         }
     }
 
     public void DisplayAll() {
-        foreach (Book book in books) {
+        foreach (Book book in this) {
             book.DisplayAll();
         }
     }
 
     public Book? SelectBookByID(ushort ID) {
-        foreach (Book book in books) {
+        foreach (Book book in this) {
             if (book.ID == ID) {
                 return book;
             }
@@ -72,7 +68,7 @@ class BookSet {
     }
 
     public void Save() {
-        foreach (Book book in books) {
+        foreach (Book book in this) {
             book.SaveBook();
         }
     }
