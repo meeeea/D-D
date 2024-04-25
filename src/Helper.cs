@@ -16,9 +16,9 @@ class Helper {
         while (true) {
             Console.WriteLine(message);
 
-            string? retrunable = Console.ReadLine()?.Trim().Substring(0, maxLength);
-            if (retrunable != null) {
-                return retrunable;
+            string? returnable = Console.ReadLine();
+            if (returnable != null) {
+                return returnable.Trim().Substring(0, Math.Min(maxLength, returnable.Length));
             }
         }
     }
