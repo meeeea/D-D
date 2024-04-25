@@ -43,7 +43,7 @@ class Manager<T> : List<Content>
                     return null;
                 default:
                     try {
-                        return (T) this[int.Parse(response)];
+                        return (T) this[int.Parse(response) - 1];
                     }
                     catch (IndexOutOfRangeException) {
                         continue;
