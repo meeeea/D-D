@@ -68,43 +68,24 @@ class Spell : Content {
         }
     }
 
-    
-
-    public Spell(int level = 0, string name = "") {
-        _level = (ushort) level;
-        _name = name;
-    }
-
-    public Spell(int level = 0, string name = "", bool somatic = false, bool verbal = false) {
-        _level = (ushort) level;
-        _name = name;
-        _somatic = somatic;
-        _verbal = verbal;
-    }
-    
-    public Spell(int level = 0, string name = "", bool somatic = false, bool verbal = false,
-     bool matirial = false, string components = " ", bool isConsumed = false) {
-        _level = (ushort) level;
-        _name = name;
-        _somatic = somatic;
-        _verbal = verbal;
-        _matirial = matirial;
-        _matirialComponents = components;
-        _matirialIsConsumed = isConsumed;
-    }
-
     public Spell(string? spell) {
         if (spell == null) {
             throw new Book.Exceptions.SpellException();
         }
-        ushort nameLength = ushort.Parse(spell.Substring(0,2));
-        _name = spell.Substring(2, nameLength);
-        _level = ushort.Parse($"{spell[nameLength + 2]}");
-        _verbal = RWTools.IsTrue(spell[nameLength + 3]);
-        _somatic = RWTools.IsTrue(spell[nameLength + 4]);
-        _matirial = RWTools.IsTrue(spell[nameLength + 5]);
+        ushort indenter = ushort.Parse(spell.Substring(0,2));
+
+        _name = spell.Substring(2, indenter);
+        _level = ushort.Parse($"{spell[indenter + 2]}");
+        _verbal = RWTools.IsTrue(spell[indenter + 3]);
+        _somatic = RWTools.IsTrue(spell[indenter + 4]);
+        _matirial = RWTools.IsTrue(spell[indenter + 5]);
+        indenter += 6;
         if (Matirial) {
-            _matirialIsConsumed = RWTools.IsTrue(spell[nameLength + 6]);
+            _matirialIsConsumed = RWTools.IsTrue(spell[indenter]);
+            ushort MCLength = ushort.Parse(spell.Substring(indenter + 1, 3));
+            _matirialComponents = spell.Substring(indenter + 4, MCLength);
+            indenter += MCLength;
+            indenter += 5;
         }
     }
 
@@ -124,7 +105,8 @@ class Spell : Content {
         writer.Write(RWTools.BoolToChar(Matirial));
         if (Matirial) {
             writer.Write(RWTools.BoolToChar(MatirialIsConsumed));
-            // saving of the acctual matirials and the main body of spell not done TODO
+            writer.Write(MatirialComponents.Length.ToString().Trim('0').PadLeft(3, '0'));
+            writer.Write(MatirialComponents);
         }
         writer.Write('\n');
     }
