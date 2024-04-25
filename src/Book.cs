@@ -8,16 +8,20 @@ class Book {
     }
     private string _name = "";
     public string Name => _name;
-    private MonsterManager _mManager = new();
-    public MonsterManager MManager => _mManager;
-    private SpellManager _sManager = new();
-    public SpellManager SManager => _sManager;
-    private ClassManager _cManager = new();
-    public ClassManager CManager => _cManager;
-    private FeatManager _fManager = new();
-    public FeatManager FManager => _fManager;
-    private ItemManager _iManager = new();
-    public ItemManager IManager => _iManager;
+    private Manager<Monster> _mManager = new();
+    public Manager<Monster> MManager => _mManager;
+    private Manager<Spell> _sManager = new();
+    public Manager<Spell> SManager => _sManager;
+    private Manager<PCClass> _cManager = new();
+    public Manager<PCClass> CManager => _cManager;
+    private Manager<Feat> _fManager = new();
+    public Manager<Feat> FManager => _fManager;
+    private Manager<Item> _iManager = new();
+    public Manager<Item> IManager => _iManager;
+    private Manager<Ability> _aManager = new();
+    public Manager<Ability> AManager => _aManager;
+    private Manager<SubClass> _uManager = new();
+    public Manager<SubClass> UManager => _uManager;
 
     public Book(string fileName) {
         using (StreamReader reader = new StreamReader(File.Open($".\\books\\{fileName}",

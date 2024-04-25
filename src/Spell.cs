@@ -54,7 +54,7 @@ class Spell : Content {
         while (true) {
             Console.WriteLine("Select Name: ");
 
-            string? newName = Console.ReadLine()?.Trim();
+            string? newName = Console.ReadLine()?.Trim().Substring(0, 99);
             if (newName != null) {
                 _name = newName;
                 return;

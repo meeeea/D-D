@@ -1,6 +1,5 @@
 
-class Item : Content
-{
+class SubClass : Content {
     public override string Name => throw new NotImplementedException();
 
     public override void Display()
