@@ -1,8 +1,8 @@
-class Spell {
+class Spell : Content {
     private ushort _level = 0;
     public ushort Level => _level;
     public string _name = "";
-    public string Name => _name;
+    public override string Name => _name;
     private bool _somatic = false;
     public bool Somatic => _somatic;
     private bool _verbal = false;
@@ -44,7 +44,7 @@ class Spell {
         }
     }
 
-    public Spell(bool Manual) {
+    public Spell() {
         SetName();
         SetLevel();
         SetComponents();
@@ -123,41 +123,39 @@ class Spell {
         _matirialIsConsumed = isConsumed;
     }
 
-    public Spell(BinaryReader reader) {
-        _name = BitManager.ReadVariableLengthString(reader).Trim();
-        Console.WriteLine(Name);
-        _level = reader.ReadByte();
-        Console.WriteLine(Level);
-        _somatic = BitManager.ByteToBoolean(reader.ReadByte());
-        Console.WriteLine(Somatic);
-        _verbal = BitManager.ByteToBoolean(reader.ReadByte());
-        Console.WriteLine(Verbal);
-        _matirial = BitManager.ByteToBoolean(reader.ReadByte());
-        Console.WriteLine(Matirial);
+    public Spell(string? spell) {
+        if (spell == null) {
+            throw new Book.Exceptions.SpellException();
+        }
+        ushort nameLength = ushort.Parse(spell.Substring(0,2));
+        _name = spell.Substring(2, nameLength);
+        _level = ushort.Parse($"{spell[nameLength + 2]}");
+        _verbal = RWTools.IsTrue(spell[nameLength + 3]);
+        _somatic = RWTools.IsTrue(spell[nameLength + 4]);
+        _matirial = RWTools.IsTrue(spell[nameLength + 5]);
         if (Matirial) {
-            _matirialIsConsumed = BitManager.ByteToBoolean(reader.ReadByte());
+            _matirialIsConsumed = RWTools.IsTrue(spell[nameLength + 6]);
         }
     }
 
-    public void Display() {
+    public override void Display() {
         Console.WriteLine(Name);
         Console.WriteLine($"Level: {Level}");
         Console.WriteLine($"Components: {Components}");
     }
 
-    public void save(BinaryWriter writer) {
-        writer.Write('>');
-        writer.Write((ushort) Name.Length);
-        foreach (char letter in Name) {
-            writer.Write(letter);
-        }
-        writer.Write(Level);
-        writer.Write(Somatic);
-        writer.Write(Verbal);
-        writer.Write(Matirial);
+    public override void Save(StreamWriter writer) {
+        writer.Write('S');
+        writer.Write(Name.Length.ToString().Trim('0').PadLeft(2, '0'));
+        writer.Write(Name);
+        writer.Write(Level.ToString().Trim('0').PadLeft(1, '0'));
+        writer.Write(RWTools.BoolToChar(Somatic));
+        writer.Write(RWTools.BoolToChar(Verbal));
+        writer.Write(RWTools.BoolToChar(Matirial));
         if (Matirial) {
-            writer.Write(MatirialIsConsumed);
+            writer.Write(RWTools.BoolToChar(MatirialIsConsumed));
             // saving of the acctual matirials and the main body of spell not done TODO
         }
+        writer.Write('\n');
     }
 }

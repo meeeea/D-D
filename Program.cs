@@ -6,9 +6,10 @@
         bookSet = new();
         while (true) {
             Console.WriteLine("1). Save Books");
-            Console.WriteLine("2). View Books");
-            Console.WriteLine("3). Edit Books");
-            Console.WriteLine("4). Quit");
+            Console.WriteLine("2). Load Books");
+            Console.WriteLine("3). View Books");
+            Console.WriteLine("4). Edit Books");
+            Console.WriteLine("5). Quit");
 
             string? response = Console.ReadLine();
             MainLoopCaseSwitch(response);
@@ -20,10 +21,12 @@
             case "1":
             bookSet.Save(); return;
             case "2":
-            bookSet.DisplayAll(); return;
+            bookSet = new(); return;
             case "3":
-            EditMenu(); return;
+            bookSet.DisplayAll(); return;
             case "4":
+            EditMenu(); return;
+            case "5":
             Environment.Exit(1); return;
         }
         Console.Clear();
@@ -115,7 +118,7 @@
             case "0":
             return true;
             default:
-            SpellEditLoop(book.SManager[ushort.Parse(response) - 1]); break;
+            SpellEditLoop((Spell) book.SManager[ushort.Parse(response) - 1]); break;
         }
         return false;
     }

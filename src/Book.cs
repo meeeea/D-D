@@ -20,11 +20,23 @@ class Book {
     public ItemManager IManager => _iManager;
 
     public Book(string fileName) {
-        using (BinaryReader reader = new BinaryReader(File.Open($".\\books\\{fileName}",
+        using (StreamReader reader = new StreamReader(File.Open($".\\books\\{fileName}",
         FileMode.Open))) {
-            ReadID(reader);
-            ReadName(reader);
-            ReadSpells(reader);
+            string? bookInfo = reader.ReadLine();
+            if (bookInfo == null) {
+                throw new Exceptions.MissingFileException();
+            }
+            try {
+                _id = ushort.Parse(bookInfo.Substring(0, 8));
+                _name = bookInfo.Substring(8, 3);
+            }
+            catch (FormatException) {
+                throw new Exceptions.IDException();
+            }
+            catch (ArgumentOutOfRangeException) {
+                throw new Exceptions.NameException();
+            }
+            ReadContent(reader);
         }
     }
 
@@ -87,7 +99,7 @@ class Book {
     }
 
     public void AddSpell() {
-        SManager.AddSpell();
+        SManager.AddNew();
     }
 
     public void DisplayAll() {
@@ -103,36 +115,24 @@ class Book {
         SManager.ListedDisplay();
     }
 
-    private bool ReadID(BinaryReader reader) {
-        try {
-            _id = BitConverter.ToUInt16(reader.ReadBytes(2));
+    private void ReadContent(StreamReader reader) {
+        while (true) {
+            string? nextItem = reader.ReadLine();
+            if (nextItem == null) {
+                break;
+            }
+            switch (nextItem[0]) {
+                case 'S':
+                SManager.Add(new Spell(nextItem.Substring(1))); break;
+            }
         }
-        catch{
-            throw new Exceptions.IDException();
-        }
-        return true;
-    }
-
-    private bool ReadName(BinaryReader reader) {
-        try {
-            _name = BitManager.BytesToString(reader.ReadBytes(3));
-        }
-        catch {
-            throw new Exceptions.NameException();
-        }
-        return true;
-    }
-
-    private bool ReadSpells(BinaryReader reader) {
-        return SManager.Add(reader);
     }
 
     public void SaveBook() {
         try {
-            using (Writer writer = new Writer(File.Open($".\\books\\{Name}.book",
-            FileMode.Open))) {
-                writer.Write(IDSave);
-                writer.Write(Name);
+            using (StreamWriter writer = new StreamWriter(File.Open($".\\books\\{Name}.book",
+            FileMode.Create))) {
+                writer.Write($"{ID.ToString().PadLeft(8, '0')}{Name}\n");
                 SManager.SaveAll(writer);
             }
         }
@@ -142,6 +142,11 @@ class Book {
     }
 
     public class Exceptions {
+        [Serializable]
+        public class MissingFileException : Exception {
+            public MissingFileException() : base("The Book is emtpy") {}
+        }
+
         [Serializable]
         public class IDException : Exception {
             public IDException() 
