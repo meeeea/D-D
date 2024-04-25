@@ -1,4 +1,6 @@
 ﻿class Program {
+    //TODO Clean this up
+    
         #pragma warning disable CS8618
     public static BookSet bookSet;
         #pragma warning restore CS8618
