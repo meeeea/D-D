@@ -52,12 +52,6 @@ class BookSet : List<Book> {
         }
     }
 
-    public void DisplayAll() {
-        foreach (Book book in this) {
-            book.DisplayAll();
-        }
-    }
-
     public Book? SelectBookByID(ushort ID) {
         foreach (Book book in this) {
             if (book.ID == ID) {
@@ -65,6 +59,30 @@ class BookSet : List<Book> {
             }
         }
         return null;
+    }
+
+    public Book? SelectBook() {
+        while (true) {
+            Console.WriteLine("Select Book");
+            Console.WriteLine("0). return");
+            Display();
+            
+            string? response = Console.ReadLine();
+            if (response == null) {
+                continue;
+            }
+            switch (response) {
+                case "0":
+                    return null;
+                default:
+                    try {
+                        return this[int.Parse(response) - 1];
+                    }
+                    catch (IndexOutOfRangeException) {
+                        continue;
+                    }
+            }
+        }
     }
 
     public void Save() {

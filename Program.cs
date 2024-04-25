@@ -9,7 +9,8 @@
             Console.WriteLine("2). Load Books");
             Console.WriteLine("3). View Books");
             Console.WriteLine("4). Edit Books");
-            Console.WriteLine("5). Quit");
+            Console.WriteLine("5). Search Books");
+            Console.WriteLine("6). Quit");
 
             string? response = Console.ReadLine();
             MainLoopCaseSwitch(response);
@@ -23,43 +24,17 @@
             case "2":
             bookSet = new(); return;
             case "3":
-            bookSet.DisplayAll(); return;
+            bookSet.Display(); return;
             case "4":
-            EditMenu(); return;
+            BookEditLoop(bookSet.SelectBook()); return;
             case "5":
+            SearchMenu(); return;
+            case "6":
             Environment.Exit(1); return;
         }
         Console.Clear();
     }
 
-    private static void EditMenu() {
-        while (true) {
-            Console.Clear();
-            Console.WriteLine("Select Book");
-            Console.WriteLine("0). return");
-            bookSet.Display();
-            
-            string? response = Console.ReadLine();
-            if (response != null) {
-                if (EditLoopSwitchCase(response)) {
-                    return;
-                }
-            }
-        }
-    }
-
-    private static bool EditLoopSwitchCase(string response) {
-        if (response == "0") {
-            return true;
-        }
-        try {
-            BookEditLoop(bookSet.SelectBookByID(ushort.Parse(response)));
-        }
-        catch {
-            return false;
-        }
-        return false;
-    }
 
     private static void BookEditLoop(Book? book) {
         if (book == null) {
@@ -97,33 +72,17 @@
 
     private static void SpellEditSelectLoop(Book book) {
         while (true) {
-            Console.Clear();
-            Console.WriteLine("Select which spell to edit");
-            Console.WriteLine("0). return");
-        
-            book.SpellDisplay();
-
-            string? response = Console.ReadLine();
-            if (SpellEditSelectLoopSwitchCase(book, response)) {
+            if (SpellEditLoop((Spell?) GetContentFromBook(book, "1"))) {
                 return;
             }
         }
     }
 
-    private static bool SpellEditSelectLoopSwitchCase(Book book, string? response) {
-        if (response == null) {
-            return false;
-        }
-        switch (response) {
-            case "0":
+    private static bool SpellEditLoop(Spell? spell) {
+        if (spell == null) {
             return true;
-            default:
-            SpellEditLoop((Spell) book.SManager[ushort.Parse(response) - 1]); break;
         }
-        return false;
-    }
 
-    private static void SpellEditLoop(Spell spell) {
         while (true) {
             Console.Clear();
             Console.WriteLine("What part of the spell do you want to edit");
@@ -134,7 +93,7 @@
 
             string? response = Console.ReadLine();
             if (SpellEditLoopSwitchCase(spell, response)) {
-                return;
+                return false;
             }
         }
     }
@@ -151,5 +110,49 @@
             return true;
         }
         return false;
+    }
+
+    public static void SearchMenu() {
+        while (true) {
+            Book? book = bookSet.SelectBook();
+            if (book == null) {
+                return;
+            }
+            string? contentType = SelectContentType();
+            if (contentType == "2") {
+                continue;
+            }
+            while (true) {
+                Content? content = GetContentFromBook(book, contentType);
+                if (content == null) {
+                    break;
+                }
+                content.Display();
+            }
+        }
+    }
+
+    public static Content? GetContentFromBook(Book book, string? contentType) {
+        switch (contentType) {
+            case "1":
+                return book.SManager.SelectContent();
+            default:
+                return null;
+        }
+
+    }
+
+    public static string? SelectContentType() {
+        while (true) {
+            Console.WriteLine("Select Content Type");
+            Console.WriteLine("1). Spell");
+            Console.WriteLine("2). Return");
+
+            string? response = Console.ReadLine();
+            if (response == null) {
+                continue;
+            }
+            return response;
+        }
     }
 }

@@ -51,54 +51,24 @@ class Spell : Content {
     }
 
     public void SetName() {
-        while (true) {
-            Console.WriteLine("Select Name: ");
-
-            string? newName = Console.ReadLine()?.Trim().Substring(0, 99);
-            if (newName != null) {
-                _name = newName;
-                return;
-            }
-        }
+        _name = Helper.GetString("Spell Name");
     }
     
     public void SetLevel() {
-        while (true) {
-            Console.WriteLine("Spell Level:");
-
-            try {
-                    #pragma warning disable CS8604
-                _level = ushort.Parse(Console.ReadLine());
-                    #pragma warning restore CS8604
-            }
-            catch {
-                continue;
-            }
-            break;
-        }
+        _level = (ushort) Helper.GetInt("Spell Level");
     }
    
     public void SetComponents() {
-        _verbal = GetBool("Is Verbal?");
-        _somatic = GetBool("Is Somatic?");
-        _matirial = GetBool("Is Matirial");
+        _verbal = Helper.GetBool("Is Verbal?");
+        _somatic = Helper.GetBool("Is Somatic?");
+        _matirial = Helper.GetBool("Is Matirial");
         if (_matirial) {
-            _matirialIsConsumed = GetBool("Is The Matirial Consumed");
+            _matirialComponents = Helper.GetString("Spell Components: ");
+            _matirialIsConsumed = Helper.GetBool("Is The Matirial Consumed");
         }
     }
 
-    private static bool GetBool(string Message) {
-        while (true) {
-            Console.WriteLine(Message + " (y/n)");
-            string? response = Console.ReadLine()?.ToLower();
-            if (response == "y") {
-                return true;
-            }
-            else if (response == "n") {
-                return false;
-            }
-        }
-    }
+    
 
     public Spell(int level = 0, string name = "") {
         _level = (ushort) level;

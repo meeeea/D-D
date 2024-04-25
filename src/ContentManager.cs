@@ -1,3 +1,5 @@
+using System.Reflection;
+
 class Manager<T> : List<Content> 
     where T : Content, new()
 {
@@ -23,6 +25,30 @@ class Manager<T> : List<Content>
     public void ListedDisplay() {
         for (int i = 0; i < Count; i++) {
             Console.WriteLine($"{i + 1}). {this[i].Name}");
+        }
+    }
+
+    public T? SelectContent() {
+        while (true) {
+            Console.WriteLine($"Select {typeof(T)}");
+            Console.WriteLine("0). return");
+            ListedDisplay();
+            
+            string? response = Console.ReadLine();
+            if (response == null) {
+                continue;
+            }
+            switch (response) {
+                case "0":
+                    return null;
+                default:
+                    try {
+                        return (T) this[int.Parse(response)];
+                    }
+                    catch (IndexOutOfRangeException) {
+                        continue;
+                    }
+            }
         }
     }
 }
