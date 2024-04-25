@@ -32,7 +32,7 @@ class Book {
         ManualID();
         ManualName();
 
-        // TODO add spells and stuff
+        ManualSpellLoop();
     }
 
     private void ManualID() {
@@ -45,22 +45,49 @@ class Book {
                     #pragma warning restore CS8604
             }
             catch {
+                Console.WriteLine("Input Invalid, try again");
                 continue;
             }
             break;
         }
     }
     
-    private void ManualName() {
+    public void ManualName() {
         while (true) {
-            Console.WriteLine("Select Name: ");
+            Console.WriteLine("Select Name (3 Characters long): ");
 
             string? newName = Console.ReadLine();
-            if (newName != null) {
+            if (newName != null && newName.Length == 3) {
                 _name = newName;
                 return;
             }
         }
+    }
+
+    private void ManualSpellLoop() {
+        while (true) {
+            Console.WriteLine("1). Add Spell");
+            Console.WriteLine("2). Finish Spells");
+
+            string? response = Console.ReadLine();
+            if (ManualSpellLoopOptions(response)) {
+                return;
+            }
+        }
+    }
+
+    private bool ManualSpellLoopOptions(string? response) {
+        switch (response) {
+            case "1":
+            AddSpell(); break;
+            case "2":
+            return true;
+        }
+        return false;
+    }
+
+    public void AddSpell() {
+        SManager.AddSpell();
     }
 
     public void DisplayAll() {
@@ -102,7 +129,7 @@ class Book {
 
     public void SaveBook() {
         try {
-            using (BinaryWriter writer = new BinaryWriter(File.Open($".\\books\\{Name}.book",
+            using (Writer writer = new Writer(File.Open($".\\books\\{Name}.book",
             FileMode.Open))) {
                 writer.Write(IDSave);
                 writer.Write(Name);

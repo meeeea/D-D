@@ -3,7 +3,7 @@
     public static BookSet bookSet;
         #pragma warning restore CS8618
     public static void Main() {
-        bookSet = new(true);
+        bookSet = new();
         while (true) {
             Console.WriteLine("1). Save Books");
             Console.WriteLine("2). View Books");
@@ -65,8 +65,10 @@
         while (true) {
             Console.Clear();
             Console.WriteLine("Select what in the book you wish to edit");
-            Console.WriteLine("1). spell");
-            Console.WriteLine("2). return");
+            Console.WriteLine("1). Edit Book Name");
+            Console.WriteLine("2). Edit Spell");
+            Console.WriteLine("3). Add Spell");
+            Console.WriteLine("4). Return");
             
             string? response = Console.ReadLine();
             if (BookEditLoop(response, book)) {
@@ -78,12 +80,17 @@
     private static bool BookEditLoop(string? response, Book book) {
         switch (response) {
             case "1":
-            SpellEditSelectLoop(book); break;
+            book.ManualName(); break;
             case "2":
+            SpellEditSelectLoop(book); break;
+            case "3":
+            book.AddSpell(); break;
+            case "4":
             return true;
         }
         return false;
     }
+
 
     private static void SpellEditSelectLoop(Book book) {
         while (true) {
@@ -132,11 +139,11 @@
     private static bool SpellEditLoopSwitchCase(Spell spell, string? response) {
         switch (response) {
             case "1":
-            spell.EditName(); break;
+            spell.SetName(); break;
             case "2":
-            spell.EditLevel(); break;
+            spell.SetLevel(); break;
             case "3":
-            spell.EditComponents(); break;
+            spell.SetComponents(); break;
             case "4":
             return true;
         }

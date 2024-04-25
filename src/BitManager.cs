@@ -13,6 +13,9 @@ class BitManager {
         if (CharInList(nullCars, (char) theByte)) {
             return false;
         }
+        if (theByte == 0x00) {
+            return false;
+        }
         return true;
     }
 
@@ -25,8 +28,8 @@ class BitManager {
         return false;
     }
 
-    public static string ReadVariableLengthString(BinaryReader reader, int lengthBytes) {
-        byte[] bytes = reader.ReadBytes(lengthBytes);
+    public static string ReadVariableLengthString(BinaryReader reader) {
+        byte[] bytes = reader.ReadBytes(2);
         ushort length;
         if (bytes.Count() > 1) {
             length = BitConverter.ToUInt16(bytes);

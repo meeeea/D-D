@@ -35,4 +35,8 @@ class SpellManager {
             spell.save(writer);
         }
     }
+
+    public void AddSpell() {
+        spells.Add(new Spell(true));
+    }
 }
