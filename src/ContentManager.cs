@@ -19,4 +19,10 @@ class Manager<T> : List<Content>
     public void AddNew() {
         Add(new T());
     }
+
+    public void ListedDisplay() {
+        for (int i = 0; i < Count; i++) {
+            Console.WriteLine($"{i + 1}). {this[i].Name}");
+        }
+    }
 }

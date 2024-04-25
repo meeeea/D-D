@@ -1,3 +1,0 @@
-class MonsterManager : Manager<Monster> {
-
-}
