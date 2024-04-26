@@ -43,11 +43,17 @@ class Spell : Content {
             }
         }
     }
+    private string _description = "";
+    public string Description => _description;
+    private string _range = "";
+    public string Range => _range;
 
     public Spell() {
         SetName();
         SetLevel();
         SetComponents();
+        SetDescription();
+        SetRange();
     }
 
     public void SetName() {
@@ -68,6 +74,14 @@ class Spell : Content {
         }
     }
 
+    public void SetDescription() {
+        _description = Helper.GetString("Spell Description");
+    }
+
+    public void SetRange() {
+        _range = Helper.GetString("Spell Range");
+    }
+
     public Spell(string? spell) {
         if (spell == null) {
             throw new Book.Exceptions.SpellException();
@@ -84,15 +98,20 @@ class Spell : Content {
             _matirialIsConsumed = RWTools.IsTrue(spell[indenter]);
             ushort MCLength = ushort.Parse(spell.Substring(indenter + 1, 3));
             _matirialComponents = spell.Substring(indenter + 4, MCLength);
-            indenter += MCLength;
-            indenter += 5;
+            indenter += (ushort) (MCLength + 4);
         }
+        ushort rangeLength = ushort.Parse(spell.Substring(indenter, 2));
+        _range = spell.Substring(indenter + 2, rangeLength);
+        indenter += (ushort) (rangeLength + 2);
+        _description = spell.Substring(indenter);
     }
 
     public override void Display() {
         Console.WriteLine(Name);
         Console.WriteLine($"Level: {Level}");
+        Console.WriteLine($"Range: {Range}");
         Console.WriteLine($"Components: {Components}");
+        Console.WriteLine($"\n{Helper.Format(Description)}");
     }
 
     public override void Save(StreamWriter writer) {
@@ -108,6 +127,9 @@ class Spell : Content {
             writer.Write(MatirialComponents.Length.ToString().Trim('0').PadLeft(3, '0'));
             writer.Write(MatirialComponents);
         }
+        writer.Write(Range.Length.ToString().Trim('0').PadLeft(2, '0'));
+        writer.Write(Range);
+        writer.Write(Description);
         writer.Write('\n');
     }
 }

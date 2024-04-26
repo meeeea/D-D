@@ -37,4 +37,19 @@ class Helper {
             }
         }
     }
+
+    public static string Format(string statment) {
+        string[] words = statment.Split();
+        ushort lineLength = 0;
+        string returnable = "";
+        foreach (string word in words) {
+            lineLength += (ushort) (word.Length + 1);
+            returnable += $"{word} ";
+            if (lineLength > 45) {
+                lineLength = 0;
+                returnable += "\n";
+            }
+        }
+        return returnable;
+    }
 }

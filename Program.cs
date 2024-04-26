@@ -9,7 +9,7 @@
         while (true) {
             Console.WriteLine("1). Save Books");
             Console.WriteLine("2). Load Books");
-            Console.WriteLine("3). View Books");
+            Console.WriteLine("3). View Book List");
             Console.WriteLine("4). Edit Books");
             Console.WriteLine("5). Search Books");
             Console.WriteLine("6). Quit");
@@ -91,7 +91,9 @@
             Console.WriteLine("1). Name");
             Console.WriteLine("2). Level");
             Console.WriteLine("3). Components");
-            Console.WriteLine("4). return");
+            Console.WriteLine("4). Range");
+            Console.WriteLine("5). Description");
+            Console.WriteLine("6). return");
 
             string? response = Console.ReadLine();
             if (SpellEditLoopSwitchCase(spell, response)) {
@@ -109,6 +111,10 @@
             case "3":
             spell.SetComponents(); break;
             case "4":
+            spell.SetRange(); break;
+            case "5":
+            spell.SetDescription(); break;
+            case "6":
             return true;
         }
         return false;
