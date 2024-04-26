@@ -1,4 +1,3 @@
-
 class Ability : Content {
     public override string Name => throw new NotImplementedException();
 

@@ -1,5 +1,3 @@
-using System.Reflection;
-
 class Manager<T> : List<Content> 
     where T : Content, new()
 {
