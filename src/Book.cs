@@ -48,7 +48,7 @@ class Book {
         }
     }
 
-    public Book(bool manual) {
+    public Book() {
         ManualID();
         ManualName();
 

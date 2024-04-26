@@ -18,7 +18,7 @@ class BookSet : List<Book> {
     }
 
     private void ManualAddBook() {
-        Add(new(true));
+        Add(new());
     }
 
     public BookSet() {
