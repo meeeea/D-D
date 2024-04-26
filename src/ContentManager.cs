@@ -43,7 +43,10 @@ class Manager<T> : List<Content>
                     try {
                         return (T) this[int.Parse(response) - 1];
                     }
-                    catch (IndexOutOfRangeException) {
+                    catch (ArgumentOutOfRangeException) {
+                        continue;
+                    }
+                    catch (FormatException) {
                         continue;
                     }
             }

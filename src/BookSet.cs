@@ -78,7 +78,7 @@ class BookSet : List<Book> {
                     try {
                         return this[int.Parse(response) - 1];
                     }
-                    catch (IndexOutOfRangeException) {
+                    catch (ArgumentOutOfRangeException) {
                         continue;
                     }
             }
