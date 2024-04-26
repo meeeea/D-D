@@ -22,6 +22,10 @@ class Book {
     public Manager<Ability> AManager => _aManager;
     private Manager<SubClass> _uManager = new();
     public Manager<SubClass> UManager => _uManager;
+    private Manager<Race> _rManager = new();
+    public Manager<Race> RManager => _rManager;
+    private Manager<Background> _bManager = new();
+    public Manager<Background> BManager => _bManager;
 
     public Book(string fileName) {
         using (StreamReader reader = new StreamReader(File.Open($".\\books\\{fileName}",
