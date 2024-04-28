@@ -117,19 +117,19 @@ class Spell : Content {
 
     public override void Save(StreamWriter writer) {
         writer.Write('S');
-        writer.Write(ID.ToString().Trim('0').PadLeft(3, '0'));
-        writer.Write(Name.Length.ToString().Trim('0').PadLeft(2, '0'));
+        writer.Write(ID.ToString().TrimStart('0').PadLeft(3, '0'));
+        writer.Write(Name.Length.ToString().TrimStart('0').PadLeft(2, '0'));
         writer.Write(Name);
-        writer.Write(Level.ToString().Trim('0').PadLeft(1, '0'));
+        writer.Write(Level.ToString().TrimStart('0').PadLeft(1, '0'));
         writer.Write(RWTools.BoolToChar(Somatic));
         writer.Write(RWTools.BoolToChar(Verbal));
         writer.Write(RWTools.BoolToChar(Matirial));
         if (Matirial) {
             writer.Write(RWTools.BoolToChar(MatirialIsConsumed));
-            writer.Write(MatirialComponents.Length.ToString().Trim('0').PadLeft(3, '0'));
+            writer.Write(MatirialComponents.Length.ToString().TrimStart('0').PadLeft(3, '0'));
             writer.Write(MatirialComponents);
         }
-        writer.Write(Range.Length.ToString().Trim('0').PadLeft(2, '0'));
+        writer.Write(Range.Length.ToString().TrimStart('0').PadLeft(2, '0'));
         writer.Write(Range);
         writer.Write(Description);
         writer.Write('\n');

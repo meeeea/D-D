@@ -7,12 +7,13 @@
     public static void Main() {
         bookSet = new();
         while (true) {
-            Console.WriteLine("1). Save Books");
+            Console.WriteLine("\n1). Save Books");
             Console.WriteLine("2). Load Books");
             Console.WriteLine("3). View Book List");
-            Console.WriteLine("4). Edit Books");
-            Console.WriteLine("5). Search Books");
-            Console.WriteLine("6). Quit");
+            Console.WriteLine("4). Add Book");
+            Console.WriteLine("5). Edit Books");
+            Console.WriteLine("6). Search Books");
+            Console.WriteLine("7). Quit");
 
             string? response = Console.ReadLine();
             MainLoopCaseSwitch(response);
@@ -28,10 +29,12 @@
             case "3":
             bookSet.Display(); return;
             case "4":
-            BookEditLoop(bookSet.SelectBook()); return;
+            bookSet.Add(new()); return;
             case "5":
-            SearchMenu(); return;
+            BookEditLoop(bookSet.SelectBook()); return;
             case "6":
+            SearchMenu(); return;
+            case "7":
             Environment.Exit(1); return;
         }
         Console.Clear();

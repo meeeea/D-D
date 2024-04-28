@@ -33,15 +33,15 @@ class BookSet : List<Book> {
             }
             catch (Book.Exceptions.IDException) {
                 Console.WriteLine($"Failed to Open {file.Name} due to IDError");
-                //books.RemoveAt(books.Count - 1);
             }
             catch (Book.Exceptions.NameException) {
                 Console.WriteLine($"Failed To Open {file.Name} due to NameError");
-                //books.RemoveAt(books.Count - 1);
             }
             catch (Book.Exceptions.SpellException) {
                 Console.WriteLine($"Failure to Open {file.Name} due to SpellError");
-                //books.RemoveAt(books.Count - 1);
+            }
+            catch (Book.Exceptions.MissingFileException) {
+                Console.WriteLine($"Faiure to Open {file.Name} due to it being empty.");
             }
         }
     }
