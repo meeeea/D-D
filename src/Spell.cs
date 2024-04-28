@@ -86,14 +86,15 @@ class Spell : Content {
         if (spell == null) {
             throw new Book.Exceptions.SpellException();
         }
-        ushort indenter = ushort.Parse(spell.Substring(0,2));
+        _id = ushort.Parse(spell.Substring(0, 3));
+        ushort indenter = ushort.Parse(spell.Substring(3,2));
 
-        _name = spell.Substring(2, indenter);
-        _level = ushort.Parse($"{spell[indenter + 2]}");
-        _verbal = RWTools.IsTrue(spell[indenter + 3]);
-        _somatic = RWTools.IsTrue(spell[indenter + 4]);
-        _matirial = RWTools.IsTrue(spell[indenter + 5]);
-        indenter += 6;
+        _name = spell.Substring(5, indenter);
+        _level = ushort.Parse($"{spell[indenter + 5]}");
+        _verbal = RWTools.IsTrue(spell[indenter + 6]);
+        _somatic = RWTools.IsTrue(spell[indenter + 7]);
+        _matirial = RWTools.IsTrue(spell[indenter + 8]);
+        indenter += 9;
         if (Matirial) {
             _matirialIsConsumed = RWTools.IsTrue(spell[indenter]);
             ushort MCLength = ushort.Parse(spell.Substring(indenter + 1, 3));
@@ -116,6 +117,7 @@ class Spell : Content {
 
     public override void Save(StreamWriter writer) {
         writer.Write('S');
+        writer.Write(ID.ToString().Trim('0').PadLeft(3, '0'));
         writer.Write(Name.Length.ToString().Trim('0').PadLeft(2, '0'));
         writer.Write(Name);
         writer.Write(Level.ToString().Trim('0').PadLeft(1, '0'));

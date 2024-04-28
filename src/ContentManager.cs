@@ -11,8 +11,8 @@ class Manager<T> : List<Content>
     }
     
     public void SaveAll(StreamWriter writer) {
-        foreach (Spell spell in this) {
-            spell.Save(writer);
+        foreach (Content content in this) {
+            content.Save(writer);
         }
     }
 
@@ -51,5 +51,25 @@ class Manager<T> : List<Content>
                     }
             }
         }
+    }
+
+    public Manager<T> Fix() {
+        Manager<T> contents = new(){this[0]};
+        foreach (T item in GetRange(1, Count - 1)) {
+            bool inserted = false;
+            for(int i = 0; i < contents.Count; i++) {
+                if (item <= contents[i]) {
+                    Console.WriteLine(item.Name);
+                    contents.Insert(i, item);
+                    inserted = true;
+                    break;
+                }
+            }
+            if (!inserted) {
+                contents.Add(item);
+            }
+        }
+        contents.Reverse();
+        return contents;
     }
 }

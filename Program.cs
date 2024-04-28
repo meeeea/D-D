@@ -46,9 +46,10 @@
             Console.Clear();
             Console.WriteLine("Select what in the book you wish to edit");
             Console.WriteLine("1). Edit Book Name");
-            Console.WriteLine("2). Edit Spell");
-            Console.WriteLine("3). Add Spell");
-            Console.WriteLine("4). Return");
+            Console.WriteLine("2). Fix Book");
+            Console.WriteLine("3). Edit Spell");
+            Console.WriteLine("4). Add Spell");
+            Console.WriteLine("5). Return");
             
             string? response = Console.ReadLine();
             if (BookEditLoop(response, book)) {
@@ -62,10 +63,12 @@
             case "1":
             book.ManualName(); break;
             case "2":
-            SpellEditSelectLoop(book); break;
+            book.Fix(); break;
             case "3":
-            book.AddSpell(); break;
+            SpellEditSelectLoop(book); break;
             case "4":
+            book.AddSpell(); break;
+            case "5":
             return true;
         }
         return false;

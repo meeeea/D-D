@@ -149,6 +149,10 @@ class Book {
         }
     }
 
+    public void Fix() {
+        _sManager = SManager.Fix();
+    }
+
     public class Exceptions {
         [Serializable]
         public class MissingFileException : Exception {
