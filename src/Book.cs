@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 class Book {
     private ushort _id = 0;
     public ushort ID => _id;
@@ -8,6 +10,23 @@ class Book {
     }
     private string _name = "";
     public string Name => _name;
+    public Content.OneOfManager? this[int index] { 
+        get {
+            switch (index) {
+                case 1 : return AManager;
+                case 2 : return BManager;
+                case 3 : return CManager;
+                case 4 : return FManager;
+                case 5 : return IManager;
+                case 6 : return MManager;
+                case 7 : return RManager;
+                case 8 : return SManager;
+                case 9 : return UManager;
+            }
+            return null;
+        }
+    }
+
     private Manager<Monster> _mManager = new();
     public Manager<Monster> MManager => _mManager;
     private Manager<Spell> _sManager = new();
@@ -26,9 +45,9 @@ class Book {
     public Manager<Race> RManager => _rManager;
     private Manager<Background> _bManager = new();
     public Manager<Background> BManager => _bManager;
-
-    public Book(string fileName) {
-        using (StreamReader reader = new StreamReader(File.Open($".\\books\\{fileName}",
+    
+    public Book(string fileName, string folder = ".\\books\\") {
+        using (StreamReader reader = new StreamReader(File.Open($"{folder}{fileName}",
         FileMode.Open))) {
             string? bookInfo = reader.ReadLine();
             if (bookInfo == null) {
@@ -131,9 +150,25 @@ class Book {
             }
             switch (nextItem[0]) {
                 case 'S':
-                SManager.Add(new Spell(nextItem.Substring(1))); break;
+                    SManager.Add(new Spell(nextItem.Substring(1))); break;
+                case 'O':
+                    OverrideContentSender(nextItem.Substring(1)); break;
             }
         }
+    }
+
+    private void OverrideContentSender(string line) {
+        ushort overrideID = ushort.Parse(line.Substring(0, 8));
+        Program.bookSet.SelectBookByID(overrideID)?.OverrideContentReciever(line.Substring(8));
+    }
+
+    private void OverrideContentReciever(string line) {
+        // TODO DO THE OVERRIDES
+        //ushort itemID = ushort.Parse(line.Substring(0, 3));
+        //switch (line[3]) {
+        //    case 'S':
+        //    SManager.SelectContentByID(itemID)?.Override(line.Substring(4)); break;
+        //}
     }
 
     public void SaveBook() {

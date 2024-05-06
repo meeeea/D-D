@@ -13,7 +13,8 @@
             Console.WriteLine("4). Add Book");
             Console.WriteLine("5). Edit Books");
             Console.WriteLine("6). Search Books");
-            Console.WriteLine("7). Quit");
+            Console.WriteLine("7). Run Test Functions");
+            Console.WriteLine("8). Quit");
 
             string? response = Console.ReadLine();
             MainLoopCaseSwitch(response);
@@ -35,6 +36,8 @@
             case "6":
             SearchMenu(); return;
             case "7":
+            TestMaster.TestAll(); return;
+            case "8":
             Environment.Exit(1); return;
         }
         Console.Clear();

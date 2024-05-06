@@ -52,4 +52,12 @@ class Helper {
         }
         return returnable;
     }
+
+    public static string StringLength(string statement, int digits) {
+        return statement.Length.ToString().TrimStart('0').PadLeft(digits, '0');
+    }
+
+    public static string IntToString(int number, int digits) {
+        return number.ToString().TrimStart('0').PadLeft(digits, '0');
+    }
 }

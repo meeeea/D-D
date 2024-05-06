@@ -9,7 +9,7 @@ class BookSet : List<Book> {
             if (response != null) {
                 switch (response) {
                     case "1":
-                    ManualAddBook();break;
+                    AddManualBook();break;
                     case "2":
                     return;
                 }
@@ -17,12 +17,12 @@ class BookSet : List<Book> {
         }
     }
 
-    private void ManualAddBook() {
+    private void AddManualBook() {
         Add(new());
     }
 
-    public BookSet() {
-        DirectoryInfo d = new DirectoryInfo(".\\books"); //Assuming Test is your Folder
+    public BookSet(string folder = ".\\books") {
+        DirectoryInfo d = new DirectoryInfo(folder); //Assuming Test is your Folder
 
         FileInfo[] Files = d.GetFiles("*.book"); //Getting Text files
 
@@ -41,7 +41,7 @@ class BookSet : List<Book> {
                 Console.WriteLine($"Failure to Open {file.Name} due to SpellError");
             }
             catch (Book.Exceptions.MissingFileException) {
-                Console.WriteLine($"Faiure to Open {file.Name} due to it being empty.");
+                Console.WriteLine($"Faiure to Open {file.Name} due to it not existing.");
             }
         }
     }

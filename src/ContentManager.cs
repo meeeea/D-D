@@ -1,6 +1,15 @@
+using System.Net.Mime;
+using OneOf;
+
 class Manager<T> : List<Content> 
-    where T : Content, new()
-{
+    where T : Content, new() {
+
+    public static implicit operator Manager<T>?(Content.OneOfManager? _) {
+        if (_ == null) {
+            return null;
+        }
+        return _;
+    }
     public void DisplayAll() {
         if (Count == 0) {
             return;
@@ -51,6 +60,15 @@ class Manager<T> : List<Content>
                     }
             }
         }
+    }
+
+    public T? SelectContentByID(ushort ID) {
+        foreach (T item in this) {
+            if (item.ID == ID) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public Manager<T> Fix() {
