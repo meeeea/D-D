@@ -1,15 +1,14 @@
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.VisualBasic;
 
 class Book {
     private ushort _id = 0;
     public ushort ID => _id;
-    public byte[] IDSave {
-        get {
-            return BitConverter.GetBytes(ID);
-        }
-    }
+    private static int IDLength = 5;
+    public string IDSave => ID.ToString().PadLeft(IDLength, '0');
     private string _name = "";
     public string Name => _name;
+    
     public Content.OneOfManager? this[int index] { 
         get {
             switch (index) {
@@ -25,6 +24,13 @@ class Book {
             }
             return null;
         }
+    }
+
+    public Content? SelectContentByID(int contentType, ushort id) {
+        switch (contentType) {
+            case 1: return ((Manager<Ability>?) this[1])?.SelectContentByID(id);
+        }
+        throw new Content.OneOfManager.ManagerTypeException();
     }
 
     private Manager<Monster> _mManager = new();
@@ -45,6 +51,8 @@ class Book {
     public Manager<Race> RManager => _rManager;
     private Manager<Background> _bManager = new();
     public Manager<Background> BManager => _bManager;
+    private OverrideManager Omanager = new();
+    public OverrideManager OManager => Omanager;
     
     public Book(string fileName, string folder = ".\\books\\") {
         using (StreamReader reader = new StreamReader(File.Open($"{folder}{fileName}",
@@ -54,8 +62,8 @@ class Book {
                 throw new Exceptions.MissingFileException();
             }
             try {
-                _id = ushort.Parse(bookInfo.Substring(0, 8));
-                _name = bookInfo.Substring(8, 3);
+                _id = ushort.Parse(bookInfo.Substring(0, IDLength));
+                _name = bookInfo.Substring(IDLength, 3);
             }
             catch (FormatException) {
                 throw new Exceptions.IDException();
@@ -152,30 +160,23 @@ class Book {
                 case 'S':
                     SManager.Add(new Spell(nextItem.Substring(1))); break;
                 case 'O':
-                    OverrideContentSender(nextItem.Substring(1)); break;
+                    OverrideAdder(nextItem.Substring(1)); break;
             }
         }
     }
 
-    private void OverrideContentSender(string line) {
-        ushort overrideID = ushort.Parse(line.Substring(0, 8));
-        Program.bookSet.SelectBookByID(overrideID)?.OverrideContentReciever(line.Substring(8));
-    }
-
-    private void OverrideContentReciever(string line) {
-        // TODO DO THE OVERRIDES
-        //ushort itemID = ushort.Parse(line.Substring(0, 3));
-        //switch (line[3]) {
-        //    case 'S':
-        //    SManager.SelectContentByID(itemID)?.Override(line.Substring(4)); break;
-        //}
+    private void OverrideAdder(string line) {
+        switch (line[0]) {
+            case 'S':
+            OManager.Spell.Add(new SpellOverride(line.Substring(1))); break;
+        }
     }
 
     public void SaveBook() {
         try {
             using (StreamWriter writer = new StreamWriter(File.Open($".\\books\\{Name}.book",
             FileMode.Create))) {
-                writer.Write($"{ID.ToString().PadLeft(8, '0')}{Name}\n");
+                writer.Write($"{IDSave}{Name}\n");
                 SManager.SaveAll(writer);
             }
         }
@@ -209,6 +210,12 @@ class Book {
         public class SpellException : Exception {
             public SpellException()
                 : base("Failure to read spells") { }
+        }
+
+        [Serializable]
+        public class OverrideException : Exception {
+            public OverrideException()
+                : base("Failure to read override") { }
         }
     }
 }

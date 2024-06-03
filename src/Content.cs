@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using OneOf;
 using OneOf.Types;
@@ -20,8 +21,28 @@ abstract class Content {
         public static implicit operator OneOfManager(Manager<Race> _) => new(_);
         public static implicit operator OneOfManager(Manager<Spell> _) => new(_);
         public static implicit operator OneOfManager(Manager<SubClass> _) => new(_);
+
+        [Serializable]
+        public class ManagerTypeException : Exception {
+            public ManagerTypeException() : base() {}
+        }
     }
 
+    public class OverrideDirectory {
+        private ushort _overridenBookID;
+        private ushort _overridenManagerID;
+        private ushort _overridenItemID;
+
+        public OverrideDirectory(ushort bookID = 0, ushort managerID = 1, ushort itemID = 1) {
+            _overridenBookID = bookID;
+            _overridenManagerID = managerID;
+            _overridenItemID = itemID;
+        }
+        public Content? GetContent() {
+            return Program.bookSet.SelectBookByID(_overridenBookID)?.SelectContentByID(_overridenManagerID,
+                                                                         _overridenItemID);
+        }
+    }
     public static int? ChildrenInt(Content type) {
         switch (type) {
             case Ability : return 1;
