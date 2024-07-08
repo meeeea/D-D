@@ -1,6 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.VisualBasic;
-
 class Book {
     private ushort _id = 0;
     public ushort ID => _id;
