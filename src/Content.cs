@@ -28,14 +28,14 @@ abstract class Content {
         }
     }
 
-    public class OverrideDirectory {
+    public class OverrideDirectory<T> where T: Content {
         private ushort _overridenBookID;
         private ushort _overridenManagerID;
         private ushort _overridenItemID;
 
-        public OverrideDirectory(ushort bookID = 0, ushort managerID = 1, ushort itemID = 1) {
+        public OverrideDirectory(ushort bookID = 0, ushort itemID = 1) {
             _overridenBookID = bookID;
-            _overridenManagerID = managerID;
+            _overridenManagerID = (ushort) Book.ContentTypeToManagerID(GetType());
             _overridenItemID = itemID;
         }
         public Content? GetContent() {

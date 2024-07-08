@@ -1,14 +1,13 @@
 class Override<T> : Content where T : Content, new() {
     public override string Name => throw new NotImplementedException();
 
-    protected OverrideDirectory overrideTarget = new();
+    protected OverrideDirectory<T> overrideTarget = new();
 
     public Override() {}
     public Override(string? input) {
         if (input == null) {
             throw new Book.Exceptions.OverrideException();
         }
-            
     }
 
     public override void Display() {

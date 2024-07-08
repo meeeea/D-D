@@ -29,10 +29,35 @@ class Book {
     public Content? SelectContentByID(int contentType, ushort id) {
         switch (contentType) {
             case 1: return ((Manager<Ability>?) this[1])?.SelectContentByID(id);
+            case 2: return ((Manager<Background>?) this[2])?.SelectContentByID(id);
+            case 3: return ((Manager<PCClass>?) this[3])?.SelectContentByID(id);
+            case 4: return ((Manager<Feat>?) this[4])?.SelectContentByID(id);
+            case 5: return ((Manager<Item>?) this[5])?.SelectContentByID(id);
+            case 6: return ((Manager<Monster>?) this[6])?.SelectContentByID(id);
+            case 7: return ((Manager<Race>?) this[7])?.SelectContentByID(id);
+            case 8: return ((Manager<Spell>?) this[8])?.SelectContentByID(id);
+            case 9: return ((Manager<SubClass>?) this[9])?.SelectContentByID(id);
         }
         throw new Content.OneOfManager.ManagerTypeException();
     }
+    public Content? SelectContentByID<T>(ushort id) {
+        return ((Manager<Ability>?) this[ContentTypeToManagerID(typeof(T))])?.SelectContentByID(id);
+        throw new Content.OneOfManager.ManagerTypeException();
+    }
 
+    public static int ContentTypeToManagerID(Type type) {
+        if (type == typeof(Content)) {return 0;}
+        else if (type == typeof(Ability)) {return 1;}
+        else if (type == typeof(Background)) {return 2;}
+        else if (type == typeof(PCClass)) {return 3;}
+        else if (type == typeof(Feat)) {return 4;}
+        else if (type == typeof(Item)) {return 5;}
+        else if (type == typeof(Monster)) {return 6;}
+        else if (type == typeof(Race)) {return 7;}
+        else if (type == typeof(Spell)) {return 8;}
+        else if (type == typeof(SubClass)) {return 9;}
+        throw new Content.OneOfManager.ManagerTypeException();
+    }
     private Manager<Monster> _mManager = new();
     public Manager<Monster> MManager => _mManager;
     private Manager<Spell> _sManager = new();
