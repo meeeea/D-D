@@ -72,6 +72,9 @@ class Manager<T> : List<Content>
     }
 
     public Manager<T> Fix() {
+        if (Count < 1) {
+            return new();
+        }
         Manager<T> contents = new(){this[0]};
         foreach (T item in GetRange(1, Count - 1)) {
             bool inserted = false;
